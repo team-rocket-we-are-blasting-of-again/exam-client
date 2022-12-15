@@ -63,6 +63,7 @@ export default function RegisterCourier() {
   return (
     <Row>
       <form id="RegisterCourierForm" onChange={onChange}>
+        <h5>Sign up</h5>
         <input
           placeholder="First Name"
           required={true}
@@ -83,9 +84,9 @@ export default function RegisterCourier() {
           type="password"
           id="password"
         />
-        <button onClick={registerCourier}>Register courier</button>
+        <button onClick={registerCourier}>Register courier</button> <br />
+        {registrationMsg}
       </form>
-      {registrationMsg}
     </Row>
   );
 }

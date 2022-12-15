@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
-import TransactionBox from "./TransactionBox";
-import TransactionPost from "./TransactionPost";
+import Task from "./DeliveryTask";
 
-export default function OrderViewer() {
+export default function Deliveries({ role_id }) {
   let stompClient;
-  const [validTransactions, setValidTransactions] = useState([]);
-  const [invalidTransactions, setInvalidTransactions] = useState([]);
   const [newDeliveryTasks, setNewDeliveryTasks] = useState([]);
   const [connected, setConnected] = useState(false);
 
   const connect = () => {
     let Sock = new SockJS("http://localhost:9088/ws");
+
     stompClient = over(Sock);
-    stompClient.connect({ role_id: 15 }, onConnected, onError);
+    stompClient.connect({ role_id }, onConnected, onError);
 
     console.log("CONNECTED");
   };
-
   const onConnected = () => {
     setConnected(true);
     stompClient.subscribe(`/delivery/cph`, onNewDelivery, {
-      role_id: 15,
+      role_id,
       area: "CPH",
     });
   };
@@ -33,13 +30,10 @@ export default function OrderViewer() {
   };
 
   const onNewDelivery = (payload) => {
-    console.log("New DELIvery:");
-
     var tr = JSON.parse(payload.body);
-    newDeliveryTasks.push(tr);
-    setNewDeliveryTasks([...newDeliveryTasks]);
-    console.log(payload);
+    setNewDeliveryTasks([...tr]);
   };
+
   useEffect(() => {
     if (!connected) {
       connect();
@@ -47,18 +41,28 @@ export default function OrderViewer() {
   }, [connected]);
 
   return (
-    <div>
-      <TransactionPost />
-      <TransactionBox
-        list={validTransactions}
-        theader={"Valid Transactions"}
-        float="left"
-      />
-      <TransactionBox
-        list={invalidTransactions}
-        theader={"Invalid Transactions"}
-        float="right"
-      />
-    </div>
+    <>
+      <br />
+      <br />
+      <h5>Available Deliveries</h5>
+      <table>
+        <thead>
+          <tr>
+            <th>Restaurant name</th>
+            <th>Restaurant address id</th>
+            <th>Customer name</th>
+            <th>Customer address id</th>
+            <th>Pick up time:</th>
+            <th>Order Id</th>
+            <th>Claim</th>
+          </tr>
+        </thead>
+        <tbody>
+          {newDeliveryTasks.map((o) => {
+            return <Task id={o.id} key={o.id} task={o} />;
+          })}
+        </tbody>
+      </table>
+    </>
   );
 }
