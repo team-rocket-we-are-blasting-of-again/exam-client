@@ -31,7 +31,7 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
           branch_name=$(echo $GITHUB_REF | cut -d'/' -f 3 | tr / -)
           version=$(cat package.json | jq '.version' -r)
-          image="$lower_case_image-$branch_name-$version"
+          image="$lower_case_image:$branch_name-$version"
           docker build --tag "$image" .
           docker push "$image"
         env:
