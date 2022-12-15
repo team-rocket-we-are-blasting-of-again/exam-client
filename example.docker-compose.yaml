@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  client:
+    image: tobiaszimmer/exam-client:main-0.1.0
+    ports:
+      - "3000:80"

@@ -1,0 +1,43 @@
+name: Deploy client
+
+on: [push]
+
+env:
+  DOCKER_USERNAME: tobiaszimmer
+
+jobs:
+  deploy-images:
+    name: Deploy images
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install jq
+        shell: bash
+        run: sudo apt install jq -y
+
+      - name: Deploy to dockerhub
+        shell: bash
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+          lower_case_image=$(echo $IMAGE_NAME | awk '{print tolower($0)}')
+          branch_name=$(echo $GITHUB_REF | cut -d'/' -f 3 | tr / -)
+          version=$(cat package.json | jq '.version' -r)
+          image="$lower_case_image-$branch_name-$version"
+          docker build --tag "$image" .
+          docker push "$image"
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          IMAGE_NAME: ${{ env.DOCKER_USERNAME }}/${{ github.event.repository.name }}
+
+      - name: Push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+          DOCKER_USER: ${{ env.DOCKER_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
+        with:
+          destination_container_repo: ${{ env.lower_case_image }}
+          provider: dockerhub
+          short_description: "Simple example client which integrates with MTOGO"
+          readme_file: "DOCKER_README.md"
