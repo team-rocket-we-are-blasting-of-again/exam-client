@@ -10,6 +10,7 @@ const links = {
     restaurant: "http://localhost:9080/register",
   },
 };
+const claimTaskUrl = "http://localhost:9088/claim";
 
 function apiFacade() {
   //............registerUser..............\\
@@ -32,9 +33,19 @@ function apiFacade() {
     return fetch(URL + "/api/login", options).then(handleHttpErrors);
   };
 
-  const fetchData = (url2) => {
-    const options = makeOptions("GET", true); //True add's the token
-    return fetch(URL + url2, options).then(handleHttpErrors);
+  const claimTask = (body, role_id) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        role_id: role_id,
+      },
+      body: JSON.stringify(body),
+    };
+    console.log(options);
+
+    return fetch(claimTaskUrl, options).then(handleHttpErrors);
   };
 
   const fetchAnyGET = (URL) => {
@@ -61,10 +72,10 @@ function apiFacade() {
   return {
     makeOptions,
     login,
-    fetchData,
     registerUser,
     fetchAnyGET,
     fetchNoOptions,
+    claimTask,
   };
 }
 const facade = apiFacade();

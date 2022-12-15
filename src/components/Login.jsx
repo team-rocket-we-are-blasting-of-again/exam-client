@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Deliveries from "./AvailableDeliveries";
+
 export default function Login() {
   const initloginCredentials = { password: "", role_id: "" };
-  const [loginCredentials, setLoginCredentials] = useState(initloginCredentials);
+  const [loginCredentials, setLoginCredentials] =
+    useState(initloginCredentials);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role_id, setRole_id] = useState();
 
   const loginCourier = (evt) => {
     evt.preventDefault();
     if (validateInput()) {
       setIsLoggedIn(true);
+      setRole_id(loginCredentials.role_id);
     }
   };
   const onChange = (evt) => {
@@ -47,7 +51,11 @@ export default function Login() {
       </form>
       <br />
       <br />
-      {isLoggedIn ? <Deliveries /> : "Log in to see deliveries..."}
+      {isLoggedIn ? (
+        <Deliveries role_id={role_id} />
+      ) : (
+        "Log in to see deliveries..."
+      )}
     </>
   );
 }

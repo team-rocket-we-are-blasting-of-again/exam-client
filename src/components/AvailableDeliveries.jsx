@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import Task from "./DeliveryTask";
+import ClaimedDeliveries from "./ClaimedDeliveries";
 
 export default function Deliveries({ role_id }) {
   let stompClient;
   const [newDeliveryTasks, setNewDeliveryTasks] = useState([]);
   const [connected, setConnected] = useState(false);
-
+  const [claimedTasks, setClaimedTasks] = useState([]);
+  const role = role_id;
   const connect = () => {
     let Sock = new SockJS("http://localhost:9088/ws");
 
     stompClient = over(Sock);
     stompClient.connect({ role_id }, onConnected, onError);
-
-    console.log("CONNECTED");
   };
   const onConnected = () => {
     setConnected(true);
@@ -23,7 +23,7 @@ export default function Deliveries({ role_id }) {
       area: "CPH",
     });
   };
-
+  console.log(role_id);
   const onError = (err) => {
     console.log(err);
     setConnected(false);
@@ -59,10 +59,11 @@ export default function Deliveries({ role_id }) {
         </thead>
         <tbody>
           {newDeliveryTasks.map((o) => {
-            return <Task id={o.id} key={o.id} task={o} />;
+            return <Task id={o.id} key={o.id} task={o} role_id={role} />;
           })}
         </tbody>
       </table>
+      <ClaimedDeliveries claimedTasks={claimedTasks} />
     </>
   );
 }

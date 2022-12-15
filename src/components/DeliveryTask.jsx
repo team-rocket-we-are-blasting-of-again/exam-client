@@ -1,8 +1,21 @@
 import React from "react";
+import facade from "../ApiFacade";
 
-export default function Task({ task }) {
+export default function Task({ task, role_id }) {
   const pickupTime = new Date(task.pickupTime).toString().split(" GMT")[0];
-  
+  console.log(role_id);
+  const claimTask = (e) => {
+    e.preventDefault();
+    const request = { deliveryId: task.id };
+    facade
+      .claimTask(request, role_id)
+      .then((d) => {
+        console.log(d);        
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <tr>
@@ -13,7 +26,7 @@ export default function Task({ task }) {
       <td>{pickupTime}</td>
       <td>{task.orderId}</td>
       <td>
-        <button>Claim</button>
+        <button onClick={claimTask}>Claim</button>
       </td>
     </tr>
   );
