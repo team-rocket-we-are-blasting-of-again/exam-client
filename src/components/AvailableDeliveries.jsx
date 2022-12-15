@@ -76,7 +76,7 @@ export default function Deliveries({ role_id }) {
           })}
         </tbody>
       </table>
-      <ClaimedDeliveries claimedTasks={claimedTasks} />
+      <ClaimedDeliveries claimedTasks={claimedTasks}  role_id={role_id} />
     </>
   );
 }

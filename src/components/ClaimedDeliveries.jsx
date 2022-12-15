@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import ClaimedTask from "./ClaimedTask";
-;
+import facade from "../ApiFacade";
 
-export default function ClaimedDeliveries({ claimedTasks }) {  
- 
+
+export default function ClaimedDeliveries({ claimedTasks, role_id }) {
+  const [claimedTasks, setClaimedTasks] = useState([])
+  const [fetchClaimed, setFetchClaimed] = useState(true)
+
+  useEffect(() => {
+    if (fetchClaimed) {
+facade.getClaimedTasks(role_id)
+    }
+
+  }, [fetchClaimed])
+
   return (
     <>
       <br />
@@ -11,7 +21,7 @@ export default function ClaimedDeliveries({ claimedTasks }) {
       <h5>Claimed Deliveries</h5>
       <table>
         <thead>
-          <tr>          
+          <tr>
             <th>Customer name</th>
             <th>Customer address id</th>
             <th>Order Id</th>

@@ -1,8 +1,10 @@
+const courierURL = "http://localhost:9088/"
+const restaurantURL = "http://localhost:9080/"
 const links = {
   register: {
     customer: "customerURL",
-    courier: "http://localhost:9088/register",
-    restaurant: "http://localhost:9080/register",
+    courier: "register",
+    restaurant: "register",
   },
   login: {
     customer: "customerURL",
@@ -10,7 +12,7 @@ const links = {
     restaurant: "http://localhost:9080/register",
   },
 };
-const claimOrDropTaskUrl = "http://localhost:9088/";
+
 
 function apiFacade() {
   //............registerUser..............\\
@@ -43,10 +45,20 @@ function apiFacade() {
       },
       body: JSON.stringify(body),
     };
-    console.log(options);
-
-    return fetch(claimOrDropTaskUrl + action, options).then(handleHttpErrors);
+    return fetch(courierURL + action, options).then(handleHttpErrors);
   };
+  const getClaimedTasks = (role_id) => {
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        role_id: role_id,
+      }      
+    };
+    return fetch(courierURL+"claimd-tasks", options).then(handleHttpErrors);
+  };
+
 
   const fetchAnyGET = (URL) => {
     const options = makeOptions("GET", false);
@@ -76,6 +88,7 @@ function apiFacade() {
     fetchAnyGET,
     fetchNoOptions,
     claimOrDropTask,
+    getClaimedTasks
   };
 }
 const facade = apiFacade();
