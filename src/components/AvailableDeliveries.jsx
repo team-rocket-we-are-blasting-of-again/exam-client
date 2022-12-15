@@ -34,6 +34,11 @@ export default function Deliveries({ role_id }) {
     setNewDeliveryTasks([...tr]);
   };
 
+  const addCLaimedtask = (d) => {
+    claimedTasks.push(d);
+    setClaimedTasks([...claimedTasks]);
+  };
+
   useEffect(() => {
     if (!connected) {
       connect();
@@ -59,7 +64,15 @@ export default function Deliveries({ role_id }) {
         </thead>
         <tbody>
           {newDeliveryTasks.map((o) => {
-            return <Task id={o.id} key={o.id} task={o} role_id={role} />;
+            return (
+              <Task
+                id={o.id}
+                key={o.id}
+                task={o}
+                role_id={role}
+                addCLaimedtask={addCLaimedtask}
+              />
+            );
           })}
         </tbody>
       </table>

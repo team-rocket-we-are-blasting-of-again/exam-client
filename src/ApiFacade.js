@@ -10,7 +10,7 @@ const links = {
     restaurant: "http://localhost:9080/register",
   },
 };
-const claimTaskUrl = "http://localhost:9088/claim";
+const claimOrDropTaskUrl = "http://localhost:9088/";
 
 function apiFacade() {
   //............registerUser..............\\
@@ -33,7 +33,7 @@ function apiFacade() {
     return fetch(URL + "/api/login", options).then(handleHttpErrors);
   };
 
-  const claimTask = (body, role_id) => {
+  const claimOrDropTask = (body, role_id, action) => {
     const options = {
       method: "POST",
       headers: {
@@ -45,7 +45,7 @@ function apiFacade() {
     };
     console.log(options);
 
-    return fetch(claimTaskUrl, options).then(handleHttpErrors);
+    return fetch(claimOrDropTaskUrl + action, options).then(handleHttpErrors);
   };
 
   const fetchAnyGET = (URL) => {
@@ -75,7 +75,7 @@ function apiFacade() {
     registerUser,
     fetchAnyGET,
     fetchNoOptions,
-    claimTask,
+    claimOrDropTask,
   };
 }
 const facade = apiFacade();

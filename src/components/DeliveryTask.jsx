@@ -1,16 +1,17 @@
 import React from "react";
 import facade from "../ApiFacade";
 
-export default function Task({ task, role_id }) {
+export default function Task({ task, role_id, addCLaimedtask }) {
   const pickupTime = new Date(task.pickupTime).toString().split(" GMT")[0];
-  console.log(role_id);
+
   const claimTask = (e) => {
     e.preventDefault();
     const request = { deliveryId: task.id };
     facade
-      .claimTask(request, role_id)
+      .claimOrDropTask(request, role_id, "claim")
       .then((d) => {
-        console.log(d);        
+        console.log(d);
+        addCLaimedtask(d);
       })
       .catch((err) => {
         console.log(err);
