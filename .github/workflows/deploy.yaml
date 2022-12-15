@@ -22,6 +22,8 @@ jobs:
         run: |
           lower_case_image=$(echo $IMAGE_NAME | awk '{print tolower($0)}')
           echo "lower_case_image=$lower_case_image" >> $GITHUB_ENV
+        env:
+          IMAGE_NAME: ${{ env.DOCKER_USERNAME }}/${{ github.event.repository.name }}
 
       - name: Deploy to dockerhub
         shell: bash
@@ -34,7 +36,6 @@ jobs:
           docker push "$image"
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          IMAGE_NAME: ${{ env.DOCKER_USERNAME }}/${{ github.event.repository.name }}
 
       - name: Push README to Dockerhub
         uses: christian-korneck/update-container-description-action@v1
