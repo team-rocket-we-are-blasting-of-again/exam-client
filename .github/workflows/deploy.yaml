@@ -6,8 +6,8 @@ env:
   DOCKER_USERNAME: tobiaszimmer
 
 jobs:
-  deploy-images:
-    name: Deploy images
+  deploy-client:
+    name: Deploy client
     runs-on: ubuntu-latest
 
     steps:
