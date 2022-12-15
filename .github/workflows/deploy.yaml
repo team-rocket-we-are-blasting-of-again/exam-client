@@ -17,11 +17,16 @@ jobs:
         shell: bash
         run: sudo apt install jq -y
 
+      - name: Setup variables
+        shell: bash
+        run: |
+          lower_case_image=$(echo $IMAGE_NAME | awk '{print tolower($0)}')
+          echo "lower_case_image=$lower_case_image" >> $GITHUB_ENV
+
       - name: Deploy to dockerhub
         shell: bash
         run: |
           echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
-          lower_case_image=$(echo $IMAGE_NAME | awk '{print tolower($0)}')
           branch_name=$(echo $GITHUB_REF | cut -d'/' -f 3 | tr / -)
           version=$(cat package.json | jq '.version' -r)
           image="$lower_case_image-$branch_name-$version"
