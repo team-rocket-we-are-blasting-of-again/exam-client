@@ -4,7 +4,6 @@ import facade from "../ApiFacade";
 
 
 export default function ClaimedDeliveries({ claimedTasks, role_id }) {
-  const [claimedTasks, setClaimedTasks] = useState([])
   const [fetchClaimed, setFetchClaimed] = useState(true)
 
   useEffect(() => {

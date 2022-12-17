@@ -34,7 +34,7 @@ export default function Deliveries({ role_id }) {
     setNewDeliveryTasks([...tr]);
   };
 
-  const addCLaimedtask = (d) => {
+  const addClaimedtask = (d) => {
     claimedTasks.push(d);
     setClaimedTasks([...claimedTasks]);
   };
@@ -70,7 +70,7 @@ export default function Deliveries({ role_id }) {
                 key={o.id}
                 task={o}
                 role_id={role}
-                addCLaimedtask={addCLaimedtask}
+                addClaimedtask={addClaimedtask}
               />
             );
           })}

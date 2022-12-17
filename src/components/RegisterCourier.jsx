@@ -31,7 +31,7 @@ export default function RegisterCourier() {
         .then((d) => {
           setRegistrationMsg(
             <div id="successRegisterCourier">
-              Hej, {d.firstName}! Your userId is{" "}
+              Hej, <span id="createdFirstName">{d.firstName}</span>! Your userId is{" "}
               <span id="createdUserId">{d.userId}</span>, and courierId is{" "}
               <span id="createdCourierId">{d.id}</span>
             </div>
@@ -39,11 +39,7 @@ export default function RegisterCourier() {
           console.log(d);
         })
         .catch((err) => {
-          setRegistrationMsg(
-            <div>
-              Ooops! Error status: <span id="errorStatus">{err.status}</span>
-            </div>
-          );
+          setRegistrationMsg("Ooops! Error status: " + <span id="errorStatus">err.status</span>);
           console.log(err);
         });
     } else {
@@ -84,8 +80,8 @@ export default function RegisterCourier() {
           type="password"
           id="password"
         />
-        <button onClick={registerCourier}>Register courier</button> <br />
-        {registrationMsg}
+        <button id ="registerCourierBtn" onClick={registerCourier}>Register courier</button> <br />
+        <div id="registrationMsg">{registrationMsg}</div>
       </form>
     </Row>
   );

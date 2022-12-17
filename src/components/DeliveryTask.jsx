@@ -1,7 +1,7 @@
 import React from "react";
 import facade from "../ApiFacade";
 
-export default function Task({ task, role_id, addCLaimedtask }) {
+export default function Task({ task, role_id, addClaimedtask }) {
   const pickupTime = new Date(task.pickupTime).toString().split(" GMT")[0];
 
   const claimTask = (e) => {
@@ -11,7 +11,7 @@ export default function Task({ task, role_id, addCLaimedtask }) {
       .claimOrDropTask(request, role_id, "claim")
       .then((d) => {
         console.log(d);
-        addCLaimedtask(d);
+        addClaimedtask(d);
       })
       .catch((err) => {
         console.log(err);
