@@ -1,12 +1,11 @@
 import React from "react";
-import TransactionViewer from "./components/TransactionViewer";
-import TransactionPost from "./components/TransactionPost";
+import "bootstrap/dist/css/bootstrap.min.css";
 
+import Overview from "./components/Overview";
 const App = () => {
   return (
     <>
-      
-      <TransactionViewer />
+      <Overview />
     </>
   );
 };
