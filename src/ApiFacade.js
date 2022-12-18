@@ -1,18 +1,17 @@
-const courierURL = "http://localhost:9088/"
-const restaurantURL = "http://localhost:9080/"
+const gatewayURL = "http://localhost:9999/";
+
 const links = {
   register: {
-    customer: "customerURL",
-    courier: "register",
-    restaurant: "register",
+    customer: "customers/v1/customers/registration",
+    courier: "courier/register",
+    restaurant: "restaurant/register",
   },
   login: {
-    customer: "customerURL",
-    courier: "http://localhost:9088/register",
-    restaurant: "http://localhost:9080/register",
+    customer: "auth/customer/login",
+    courier: "auth/courier/login",
+    restaurant: "auth/restaurant/login",
   },
 };
-
 
 function apiFacade() {
   //............registerUser..............\\
@@ -22,17 +21,21 @@ function apiFacade() {
       ...user,
     });
     console.log(options);
-    return fetch(links.register[role], options).then(handleHttpErrors);
+    return fetch(gatewayURL + links.register[role], options).then(
+      handleHttpErrors
+    );
   };
 
   //.........................\\
 
-  const login = (user, password) => {
+  const login = (email, password, role) => {
     const options = makeOptions("POST", true, {
-      username: user,
+      email: email,
       password: password,
     });
-    return fetch(URL + "/api/login", options).then(handleHttpErrors);
+    const url = gatewayURL + links.login[role];
+    console.log(url);
+    return fetch(url, options).then(handleHttpErrors);
   };
 
   const claimOrDropTask = (body, role_id, action) => {
@@ -45,7 +48,7 @@ function apiFacade() {
       },
       body: JSON.stringify(body),
     };
-    return fetch(courierURL + action, options).then(handleHttpErrors);
+    return fetch(gatewayURL + action, options).then(handleHttpErrors);
   };
   const getClaimedTasks = (role_id) => {
     const options = {
@@ -54,11 +57,12 @@ function apiFacade() {
         "Content-type": "application/json",
         Accept: "application/json",
         role_id: role_id,
-      }      
+      },
     };
-    return fetch(courierURL+"claimd-tasks", options).then(handleHttpErrors);
+    return fetch(gatewayURL + "courier/claimed", options).then(
+      handleHttpErrors
+    );
   };
-
 
   const fetchAnyGET = (URL) => {
     const options = makeOptions("GET", false);
@@ -88,14 +92,14 @@ function apiFacade() {
     fetchAnyGET,
     fetchNoOptions,
     claimOrDropTask,
-    getClaimedTasks
+    getClaimedTasks,
   };
 }
 const facade = apiFacade();
 
 function handleHttpErrors(res) {
   if (!res.ok) {
-    return Promise.reject({ status: res.status, fullError: res.json() });
+    return Promise.reject({ res });
   }
   return res.json();
 }

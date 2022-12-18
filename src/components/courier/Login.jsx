@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Deliveries from "./AvailableDeliveries";
+import facade from "../../ApiFacade";
 
 export default function Login() {
-  const initloginCredentials = { password: "", role_id: "" };
+  const initloginCredentials = { role_id: "" };
   const [loginCredentials, setLoginCredentials] =
     useState(initloginCredentials);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,6 +12,16 @@ export default function Login() {
   const loginCourier = (evt) => {
     evt.preventDefault();
     if (validateInput()) {
+      // facade
+      //   .login(loginCredentials.email, loginCredentials.password, "courier")
+      //   .then((d) => {
+      //     setIsLoggedIn(true);
+      //     setRole_id(loginCredentials.role_id);
+      //     console.log(d);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
       setIsLoggedIn(true);
       setRole_id(loginCredentials.role_id);
     }
@@ -34,19 +45,20 @@ export default function Login() {
     <>
       <form style={{ marginTop: 25 }} onChange={onChange}>
         <h5>Sign in</h5>
-
+        Courier ID:
         <input
           placeholder="Courier ID"
           required={true}
           type="text"
           id="role_id"
         />
+        {/* <input placeholder="Email" required={true} type="email" id="email" />
         <input
           placeholder="Password"
           required={true}
           type="password"
           id="password"
-        />
+        /> */}
         <button onClick={loginCourier}>Sign in to view Deliveries</button>
       </form>
       <br />

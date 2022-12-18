@@ -1,5 +1,5 @@
 import React from "react";
-import facade from "../ApiFacade";
+import facade from "../../ApiFacade";
 
 export default function ClaimedTask({ task, role_id, updateClaimedTasks }) {
   const dropTask = (e) => {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Row } from "react-bootstrap";
-import facade from "../ApiFacade";
+import facade from "../../ApiFacade";
 
-export default function RegisterCourier() {
+export default function RegisterCustomer() {
   const initCredantials = {
     firstName: "",
     lastName: "",
@@ -27,7 +27,7 @@ export default function RegisterCourier() {
     if (validateInput()) {
       setRegistrationMsg("Ready to fetch");
       facade
-        .registerUser(registerCredentials, "courier")
+        .registerUser(registerCredentials, "customer")
         .then((d) => {
           setRegistrationMsg(
             <div id="successRegisterCourier">
